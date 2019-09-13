@@ -16,7 +16,7 @@
             android:id="@+id/widget_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="image"
+            android:contentDescription="@string/image"
             />
 
         <TextView
@@ -48,7 +48,7 @@
             android:minLines="3"
             android:textAlignment="viewStart"
             android:padding="4dp"
-            android:text="Myada's email"
+            android:text="@string/admin_info_name"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             android:textStyle="bold"

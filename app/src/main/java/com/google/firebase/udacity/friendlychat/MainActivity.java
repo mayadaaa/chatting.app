@@ -52,6 +52,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         mUsername = ANONYMOUS;
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseStorage=FirebaseStorage.getInstance();
+        mFirebaseStorage = FirebaseStorage.getInstance();
 
 
         mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("messages");
@@ -169,20 +170,26 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     // User is signed out
                     onSignedOutCleanup();
+                    List<AuthUI.IdpConfig> providers = Arrays.asList(
+                            new AuthUI.IdpConfig.EmailBuilder().build(),
+                            new AuthUI.IdpConfig.GoogleBuilder().build());
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
                                     .setIsSmartLockEnabled(false)
-                                    .setProviders(
-                                            AuthUI.EMAIL_PROVIDER,
-                                            AuthUI.GOOGLE_PROVIDER)
+                                    .setAvailableProviders(providers)
                                     .build(),
                             RC_SIGN_IN);
 
                 }
             }
         };
+
+
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -190,10 +197,10 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 // Sign-in succeeded, set up the UI
-                Toast.makeText(this, "Signed in!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,  R.string.signed_in, Toast.LENGTH_SHORT).show();
             } else if (resultCode == RESULT_CANCELED) {
                 // Sign in was canceled by the user, finish the activity
-                Toast.makeText(this, "Sign in canceled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.sign_in_canceled, Toast.LENGTH_SHORT).show();
                 finish();
             }
             }
@@ -206,9 +213,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while(!urlTask.isSuccessful()){
                         Uri downloadUrl = urlTask.getResult();
                         FriendlyMessage friendlyMessage = new FriendlyMessage(null, mUsername,downloadUrl.toString());
-                        mMessagesDatabaseReference.push().setValue(friendlyMessage);
+                        mMessagesDatabaseReference.push().setValue(friendlyMessage);}
                     }
                 });
             }
