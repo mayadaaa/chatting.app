@@ -9,13 +9,15 @@ repositories {
 
 android {
     signingConfigs {
-        config {
-            keyAlias 'mykeystore'
-            keyPassword 'mykeystore'
+        config  {
+            keyAlias 'keystore'
+            keyPassword 'keystore'
             storeFile file("$rootDir/keystore.jks")
-            storePassword 'mykeystore'
+            storePassword 'keystore'
         }
     }
+
+
     compileSdkVersion 28
 
     defaultConfig {
@@ -32,12 +34,9 @@ android {
             signingConfig signingConfigs.config
         }
     }
-    packagingOptions {
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE-FIREBASE.txt'
-        exclude 'META-INF/NOTICE'
-    }
 }
+
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

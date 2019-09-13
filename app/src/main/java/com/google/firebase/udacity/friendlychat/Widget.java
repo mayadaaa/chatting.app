@@ -22,9 +22,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-/**
- * Created by Dell-lap on 10/9/2019.
- */
 public class Widget extends AppWidgetProvider {
 
     RemoteViews views;
@@ -34,7 +31,7 @@ public class Widget extends AppWidgetProvider {
     private String getInformation(){
         DatabaseReference databaseReference =
                 FirebaseDatabase.getInstance().getReference().child("users");
-        databaseReference.orderByChild("email").equalTo("Abdel-aziz.m@outlook.com")
+        databaseReference.orderByChild("email").equalTo("mayada.abdeen234@gmail.com")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
