@@ -36,6 +36,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton mPhotoPickerButton;
     private EditText mMessageEditText;
     private Button mSendButton;
+   private Toolbar myToolbar;
 
     private String mUsername;
     private FirebaseDatabase mFirebaseDatabase;
@@ -87,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         mUsername = ANONYMOUS;
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -104,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
         mPhotoPickerButton = (ImageButton) findViewById(R.id.photoPickerButton);
         mMessageEditText = (EditText) findViewById(R.id.messageEditText);
         mSendButton = (Button) findViewById(R.id.sendButton);
+         myToolbar = findViewById(R.id.my_toolbar);
+         setSupportActionBar(myToolbar);
 
         // Initialize message ListView and its adapter
         List<FriendlyMessage> friendlyMessages = new ArrayList<>();

@@ -50,21 +50,28 @@ public class Widget extends AppWidgetProvider {
     private void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                  int appWidgetId) {
         views = new RemoteViews(context.getPackageName(), R.layout.widget);
-        Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,0);
 
+        Intent intentUpdate = new Intent(context, MainActivity.class);
+        intentUpdate.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 
+        int[] idArray = new int[]{appWidgetId};
+        intentUpdate.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, idArray);
 
-
-
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intentUpdate, 0);
         new LoadBitmap(views).execute("Group Chat");
-        views.setOnClickPendingIntent(R.id.widget_title,pendingIntent);
+        views.setOnClickPendingIntent(R.id.widget_title, pendingIntent);
 
-        Intent secondIntent = new Intent(context,Widget.class);
+        Intent secondIntent = new Intent(context, Widget.class);
         secondIntent.setAction(ACTION_BROADCASTWIIDGET);
 
         context.sendBroadcast(secondIntent);
-        appWidgetManager.updateAppWidget(appWidgetId,views);
+
+        PendingIntent pendingUpdate = PendingIntent.getBroadcast(
+                context, appWidgetId, intentUpdate,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        appWidgetManager.updateAppWidget(appWidgetId, views);
+
 
     }
 
